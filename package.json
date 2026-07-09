@@ -9,9 +9,12 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "db:import": "node scripts/import-to-postgres.mjs",
-    "subgraph:grade5-math": "node scripts/extract-grade-subgraph.mjs --subject Mathematics --grade-age-start 10 --grade-age-end 11 --out data/subgraphs/grade5-math.json"
+    "subgraph:grade5-math": "node scripts/extract-grade-subgraph.mjs --subject Mathematics --grade-age-start 10 --grade-age-end 11 --out data/subgraphs/grade5-math.json",
+    "questions:submit": "node scripts/generate-questions.mjs --action submit",
+    "questions:collect": "node scripts/generate-questions.mjs --action collect"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.110.0",
     "pg": "^8.13.1"
   }
 }

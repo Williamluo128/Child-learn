@@ -57,3 +57,17 @@ CREATE TABLE IF NOT EXISTS clusters (
   summary          TEXT NOT NULL,
   UNIQUE (subject, domain, age_range_start)
 );
+
+CREATE TABLE IF NOT EXISTS questions (
+  id              SERIAL PRIMARY KEY,
+  topic_id        TEXT NOT NULL REFERENCES topics (id),
+  prompt          TEXT NOT NULL,
+  choices         JSONB NOT NULL,
+  correct_choice  TEXT NOT NULL,
+  explanation     TEXT NOT NULL,
+  model           TEXT NOT NULL,
+  batch_id        TEXT,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS questions_topic_idx ON questions (topic_id);
