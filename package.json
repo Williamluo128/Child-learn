@@ -8,7 +8,8 @@
   "homepage": "https://withmarble.com",
   "scripts": {
     "validate": "node scripts/validate.mjs",
-    "db:import": "node scripts/import-to-postgres.mjs"
+    "db:import": "node scripts/import-to-postgres.mjs",
+    "subgraph:grade5-math": "node scripts/extract-grade-subgraph.mjs --subject Mathematics --grade-age-start 10 --grade-age-end 11 --out data/subgraphs/grade5-math.json"
   },
   "dependencies": {
     "pg": "^8.13.1"
