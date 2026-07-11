@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import './load-env.mjs';
 /**
  * import-to-postgres.mjs — loads data/*.json into a Postgres database.
  *

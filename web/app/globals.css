@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #1a2332;
+  --muted: #6b7589;
+  --canvas: #e8f0f4;
+  --surface: #ffffff;
+  --line: #d5e0e8;
+  --path: #c5d4de;
+  --coral: #f06a4a;
+  --coral-soft: #fff0eb;
+  --blue: #3b82f0;
+  --teal: #1aa87a;
+  --amber: #e89a2e;
+}
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(800px 420px at 12% -5%, rgba(240, 106, 74, 0.12), transparent 55%),
+    radial-gradient(640px 380px at 95% 8%, rgba(26, 168, 122, 0.1), transparent 50%),
+    linear-gradient(180deg, #eef5f8 0%, #e8f0f4 40%, #e3edf2 100%);
+  color: var(--ink);
+  min-height: 100dvh;
+  touch-action: manipulation;
+}
+
+::selection {
+  background: rgba(240, 106, 74, 0.22);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

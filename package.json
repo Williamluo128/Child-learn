@@ -11,10 +11,17 @@
     "db:import": "node scripts/import-to-postgres.mjs",
     "subgraph:grade5-math": "node scripts/extract-grade-subgraph.mjs --subject Mathematics --grade-age-start 10 --grade-age-end 11 --out data/subgraphs/grade5-math.json",
     "questions:submit": "node scripts/generate-questions.mjs --action submit",
-    "questions:collect": "node scripts/generate-questions.mjs --action collect"
+    "questions:collect": "node scripts/generate-questions.mjs --action collect",
+    "questions:grade5-math": "node scripts/generate-questions.mjs --action submit --subgraph data/subgraphs/grade5-math.json --model claude-sonnet-4-5 --questions-per-topic 3",
+    "questions:openai": "node scripts/generate-questions.mjs --provider openai --action submit --subgraph data/subgraphs/grade5-math.json --model gpt-4.1-mini --questions-per-topic 3",
+    "questions:shade": "node scripts/generate-shade-questions.mjs",
+    "practice": "node scripts/practice-cli.mjs --subgraph data/subgraphs/fractions-slice.json",
+    "practice:grade5-math": "node scripts/practice-cli.mjs --subgraph data/subgraphs/grade5-math.json",
+    "practice:demo": "node scripts/practice-cli.mjs --subgraph data/subgraphs/fractions-slice.json --student demo --demo true --demo-limit 6"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.110.0",
+    "openai": "^6.46.0",
     "pg": "^8.13.1"
   }
 }

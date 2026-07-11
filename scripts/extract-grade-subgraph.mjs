@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import './load-env.mjs';
 /**
  * extract-grade-subgraph.mjs — pulls a grade-band's topics plus every
  * prerequisite they transitively depend on (including topics from earlier

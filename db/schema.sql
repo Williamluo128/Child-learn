@@ -61,13 +61,54 @@ CREATE TABLE IF NOT EXISTS clusters (
 CREATE TABLE IF NOT EXISTS questions (
   id              SERIAL PRIMARY KEY,
   topic_id        TEXT NOT NULL REFERENCES topics (id),
+  -- 'mcq'   : multiple-choice (choices + correct_choice = correct label)
+  -- 'shade' : interactive shade-a-fraction (spec holds geometry;
+  --           correct_choice = the numerator as text; choices is empty)
+  kind            TEXT NOT NULL DEFAULT 'mcq' CHECK (kind IN ('mcq', 'shade')),
   prompt          TEXT NOT NULL,
   choices         JSONB NOT NULL,
   correct_choice  TEXT NOT NULL,
   explanation     TEXT NOT NULL,
+  -- geometry for interactive questions: { shape, numerator, denominator }
+  spec            JSONB,
   model           TEXT NOT NULL,
   batch_id        TEXT,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE INDEX IF NOT EXISTS questions_topic_idx ON questions (topic_id);
+CREATE INDEX IF NOT EXISTS questions_kind_idx ON questions (kind);
+
+CREATE TABLE IF NOT EXISTS students (
+  id          TEXT PRIMARY KEY,
+  display_name TEXT NOT NULL,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- status: unknown | learning | mastered | gap
+CREATE TABLE IF NOT EXISTS student_topic_mastery (
+  student_id      TEXT NOT NULL REFERENCES students (id) ON DELETE CASCADE,
+  topic_id        TEXT NOT NULL REFERENCES topics (id),
+  status          TEXT NOT NULL DEFAULT 'unknown'
+                    CHECK (status IN ('unknown', 'learning', 'mastered', 'gap')),
+  correct_streak  SMALLINT NOT NULL DEFAULT 0,
+  wrong_streak    SMALLINT NOT NULL DEFAULT 0,
+  last_seen       TIMESTAMPTZ,
+  PRIMARY KEY (student_id, topic_id)
+);
+
+CREATE INDEX IF NOT EXISTS mastery_student_status_idx
+  ON student_topic_mastery (student_id, status);
+
+CREATE TABLE IF NOT EXISTS practice_attempts (
+  id           BIGSERIAL PRIMARY KEY,
+  student_id   TEXT NOT NULL REFERENCES students (id) ON DELETE CASCADE,
+  topic_id     TEXT NOT NULL REFERENCES topics (id),
+  question_id  INT NOT NULL REFERENCES questions (id),
+  chosen       TEXT NOT NULL,
+  correct      BOOLEAN NOT NULL,
+  mode         TEXT NOT NULL CHECK (mode IN ('diagnose', 'practice')),
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS attempts_student_idx ON practice_attempts (student_id, created_at DESC);
