@@ -2,18 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Sticker-book design language (Duolingo-inspired, coral/violet/teal palette):
+   paper-white canvas, flat fills, 2px solid borders, hard bottom edges — no
+   gradients, no blur shadows, no glass. */
 :root {
-  --ink: #1a2332;
-  --muted: #6b7589;
-  --canvas: #e8f0f4;
-  --surface: #ffffff;
-  --line: #d5e0e8;
-  --path: #c5d4de;
-  --coral: #f06a4a;
-  --coral-soft: #fff0eb;
-  --blue: #3b82f0;
-  --teal: #1aa87a;
-  --amber: #e89a2e;
+  --ink: #443d4d;
+  --muted: #7d7787;
+  --faded: #b9b3c0;
+  --paper: #ffffff;
+  --well: #f7f5f9;
+  --line: #e7e3ea;
+  --path: #ddd7e5;
+
+  --brand: #f45b39;
+  --brand-edge: #d64322;
+  --brand-soft: #ffe9e2;
+
+  --violet: #7c5cf4;
+  --violet-edge: #5f41d6;
+  --violet-soft: #f0ebff;
+
+  --teal: #12b284;
+  --teal-edge: #0a9169;
+  --teal-soft: #dcf7ee;
+
+  --amber: #efa11c;
+  --amber-edge: #c9820b;
+  --amber-soft: #fcf0d8;
 }
 
 html {
@@ -22,17 +37,118 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(800px 420px at 12% -5%, rgba(240, 106, 74, 0.12), transparent 55%),
-    radial-gradient(640px 380px at 95% 8%, rgba(26, 168, 122, 0.1), transparent 50%),
-    linear-gradient(180deg, #eef5f8 0%, #e8f0f4 40%, #e3edf2 100%);
+  background: var(--paper);
   color: var(--ink);
   min-height: 100dvh;
   touch-action: manipulation;
 }
 
 ::selection {
-  background: rgba(240, 106, 74, 0.22);
+  background: rgba(244, 91, 57, 0.22);
+}
+
+@layer components {
+  /* Flat sticker card: white fill, thick border, no shadow. */
+  .card {
+    background: var(--paper);
+    border: 2px solid var(--line);
+    border-radius: 16px;
+  }
+
+  /* 3D press button: flat fill + hard bottom edge, sinks on press. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    user-select: none;
+    transition:
+      transform 0.1s ease,
+      box-shadow 0.1s ease,
+      filter 0.15s ease;
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background: var(--brand);
+    color: #fff;
+    box-shadow: 0 4px 0 0 var(--brand-edge);
+  }
+  .btn-primary:hover:not(:disabled) {
+    filter: brightness(1.06);
+  }
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: none;
+  }
+
+  .btn-violet {
+    background: var(--violet);
+    color: #fff;
+    box-shadow: 0 4px 0 0 var(--violet-edge);
+  }
+  .btn-violet:hover:not(:disabled) {
+    filter: brightness(1.06);
+  }
+  .btn-violet:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: none;
+  }
+
+  /* Secondary: white fill, gray border, violet text (Duolingo-style outline). */
+  .btn-secondary {
+    background: var(--paper);
+    color: var(--violet);
+    border: 2px solid var(--line);
+    box-shadow: 0 3px 0 0 var(--line);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--well);
+  }
+  .btn-secondary:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: none;
+  }
+
+  /* Neutral variant of the outline button (ink text). */
+  .btn-neutral {
+    background: var(--paper);
+    color: var(--ink);
+    border: 2px solid var(--line);
+    box-shadow: 0 3px 0 0 var(--line);
+  }
+  .btn-neutral:hover:not(:disabled) {
+    background: var(--well);
+  }
+  .btn-neutral:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: none;
+  }
+
+  /* Sticker chip: bordered pill for small stats/tags. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    border: 2px solid var(--line);
+    background: var(--paper);
+    font-weight: 700;
+  }
+
+  /* Small uppercase section label. */
+  .label-caps {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
 }
 
 @layer utilities {

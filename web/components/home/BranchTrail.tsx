@@ -27,7 +27,7 @@ export function BranchTrail({ path, nextId }: Props) {
 
   if (path.length === 0) {
     return (
-      <div className="w-full rounded-card bg-surface px-6 py-10 text-center shadow-clay-soft">
+      <div className="card w-full px-6 py-10 text-center">
         <p className="text-base text-muted">{t.loading}</p>
       </div>
     );
@@ -75,7 +75,7 @@ export function BranchTrail({ path, nextId }: Props) {
           // locked is treated as open (unlockable) for free exploration
           const status =
             item.status === "locked" ? "unlockable" : item.status;
-          const color = MASTERY_META[status].color;
+          const { color, edge } = MASTERY_META[status];
 
           return (
             <li
@@ -103,20 +103,20 @@ export function BranchTrail({ path, nextId }: Props) {
                   className="relative flex w-[7.25rem] flex-col items-center"
                 >
                   {isNext && (
-                    <span className="absolute -top-9 left-1/2 z-10 -translate-x-1/2 animate-bob whitespace-nowrap rounded-full bg-coral px-3 py-1 font-display text-sm font-bold text-white shadow-clay">
+                    <span className="absolute -top-9 left-1/2 z-10 -translate-x-1/2 animate-bob whitespace-nowrap rounded-full bg-brand px-3 py-1 font-display text-sm font-bold text-white shadow-edge-brand">
                       {t.levelStart}
                     </span>
                   )}
 
                   <span
-                    className={`relative flex cursor-pointer items-center justify-center rounded-level border-[4px] shadow-clay transition duration-200 active:translate-y-0.5 active:shadow-clay-press ${
+                    className={`relative flex cursor-pointer items-center justify-center rounded-level transition duration-150 active:translate-y-1 active:!shadow-none ${
                       isNext ? "animate-level-pulse" : ""
                     }`}
                     style={{
                       width: NODE,
                       height: NODE,
                       backgroundColor: color,
-                      borderColor: "rgba(255,255,255,0.55)",
+                      boxShadow: `0 6px 0 0 ${edge}`,
                       color: "#fff",
                     }}
                   >

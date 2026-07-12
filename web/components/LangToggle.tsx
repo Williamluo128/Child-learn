@@ -8,15 +8,15 @@ const LABEL: Record<Locale, string> = { zh: "中", en: "EN" };
 export function LangToggle() {
   const { locale, setLocale } = useI18n();
   return (
-    <div className="inline-flex rounded-full bg-surface p-1 shadow-card">
+    <div className="inline-flex rounded-control border-2 border-line bg-surface p-1 shadow-edge-sm">
       {LOCALES.map((l) => (
         <button
           key={l}
           onClick={() => setLocale(l)}
           aria-pressed={locale === l}
-          className={`min-h-8 rounded-full px-2.5 py-1 text-sm font-semibold transition active:scale-[0.98] ${
+          className={`min-h-8 rounded-lg px-2.5 py-1 text-sm font-bold transition active:scale-[0.98] ${
             locale === l
-              ? "bg-ink text-white"
+              ? "bg-violet-soft text-violet-deep"
               : "text-muted hover:text-ink"
           }`}
         >

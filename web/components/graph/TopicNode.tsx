@@ -16,8 +16,8 @@ export function TopicNode({ data }: { data: TopicNodeData }) {
 
   return (
     <div
-      className="w-44 cursor-pointer rounded-card border-[3px] bg-surface px-4 py-3.5 shadow-card"
-      style={{ borderColor: meta.color }}
+      className="w-44 cursor-pointer rounded-card border-2 bg-surface px-4 py-3.5"
+      style={{ borderColor: meta.color, boxShadow: `0 3px 0 0 ${meta.edge}` }}
     >
       <Handle type="target" position={Position.Left} className="!bg-line !border-0" />
       <div className="flex items-center gap-2">

@@ -27,7 +27,7 @@ export function LevelPath({ path, nextId }: Props) {
 
   if (path.length === 0) {
     return (
-      <div className="w-full rounded-card bg-surface px-6 py-14 text-center shadow-clay-soft">
+      <div className="card w-full px-6 py-14 text-center">
         <div className="mx-auto mb-3 h-3 w-32 animate-pulse rounded-full bg-line" />
         <div className="mx-auto h-3 w-48 animate-pulse rounded-full bg-line" />
         <p className="mt-5 text-base text-muted">{t.loading}</p>
@@ -79,7 +79,7 @@ export function LevelPath({ path, nextId }: Props) {
             item.status === "gap" ||
             item.status === "unlockable" ||
             item.status === "mastered";
-          const color = MASTERY_META[item.status].color;
+          const { color, edge } = MASTERY_META[item.status];
 
           const node = (
             <motion.div
@@ -93,25 +93,23 @@ export function LevelPath({ path, nextId }: Props) {
               className="relative flex w-[7.5rem] flex-col items-center"
             >
               {isNext && (
-                <span className="absolute -top-9 left-1/2 z-10 -translate-x-1/2 animate-bob whitespace-nowrap rounded-full bg-coral px-3 py-1 font-display text-sm font-bold text-white shadow-clay">
+                <span className="absolute -top-9 left-1/2 z-10 -translate-x-1/2 animate-bob whitespace-nowrap rounded-full bg-brand px-3 py-1 font-display text-sm font-bold text-white shadow-edge-brand">
                   {t.levelStart}
                 </span>
               )}
 
               <span
-                className={`relative flex items-center justify-center rounded-level border-[4px] shadow-clay transition duration-200 ${
+                className={`relative flex items-center justify-center rounded-level transition duration-150 ${
                   clickable
-                    ? "cursor-pointer active:translate-y-0.5 active:shadow-clay-press"
+                    ? "cursor-pointer active:translate-y-1 active:!shadow-none"
                     : "cursor-not-allowed opacity-70"
                 } ${isNext ? "animate-level-pulse" : ""}`}
                 style={{
                   width: NODE,
                   height: NODE,
-                  backgroundColor: locked ? "#e8eef3" : color,
-                  borderColor: locked
-                    ? "#c5d0da"
-                    : "rgba(255,255,255,0.55)",
-                  color: locked ? "#8a96a5" : "#fff",
+                  backgroundColor: locked ? "#eeebf2" : color,
+                  boxShadow: `0 6px 0 0 ${locked ? "#d6d1dc" : edge}`,
+                  color: locked ? "#9d97a6" : "#fff",
                 }}
               >
                 {locked ? (

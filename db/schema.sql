@@ -64,7 +64,9 @@ CREATE TABLE IF NOT EXISTS questions (
   -- 'mcq'   : multiple-choice (choices + correct_choice = correct label)
   -- 'shade' : interactive shade-a-fraction (spec holds geometry;
   --           correct_choice = the numerator as text; choices is empty)
-  kind            TEXT NOT NULL DEFAULT 'mcq' CHECK (kind IN ('mcq', 'shade')),
+  -- 'cubes' : interactive count-unit-cubes 3D volume (spec holds the solid;
+  --           correct_choice = the cube count as text; choices is empty)
+  kind            TEXT NOT NULL DEFAULT 'mcq' CHECK (kind IN ('mcq', 'shade', 'cubes')),
   prompt          TEXT NOT NULL,
   choices         JSONB NOT NULL,
   correct_choice  TEXT NOT NULL,

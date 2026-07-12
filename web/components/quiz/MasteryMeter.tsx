@@ -14,7 +14,7 @@ export function MasteryMeter({ mastery }: { mastery: MasteryState }) {
           <span
             key={i}
             className="h-3 w-3 rounded-full transition-colors duration-300"
-            style={{ backgroundColor: i < filled ? "#1aa87a" : "#dce3ee" }}
+            style={{ backgroundColor: i < filled ? "#12b284" : "#e7e3ea" }}
           />
         ))}
       </div>

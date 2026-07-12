@@ -98,7 +98,7 @@ export function KnowledgeTree({ branches }: Props) {
 
   if (branches.length === 0) {
     return (
-      <div className="w-full rounded-card bg-surface px-6 py-14 text-center shadow-clay-soft">
+      <div className="card w-full px-6 py-14 text-center">
         <div className="mx-auto mb-3 h-3 w-32 animate-pulse rounded-full bg-line" />
         <div className="mx-auto h-3 w-48 animate-pulse rounded-full bg-line" />
         <p className="mt-5 text-base text-muted">{t.loading}</p>
@@ -123,75 +123,43 @@ export function KnowledgeTree({ branches }: Props) {
         preserveAspectRatio="xMidYMin meet"
         aria-hidden
       >
-        <defs>
-          <linearGradient id="trunkGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#9eb0c0" />
-            <stop offset="55%" stopColor="#7f93a6" />
-            <stop offset="100%" stopColor="#6a7f92" />
-          </linearGradient>
-        </defs>
-
-        {/* Faint canopy wash near crown */}
-        <ellipse
-          cx={crown.x}
-          cy={36}
-          rx={92}
-          ry={34}
-          fill="rgba(26,168,122,0.08)"
-        />
+        {/* Flat canopy stickers near crown */}
+        <ellipse cx={crown.x} cy={36} rx={92} ry={34} fill="var(--teal-soft)" />
         <ellipse
           cx={crown.x - 36}
           cy={48}
           rx={48}
           ry={22}
-          fill="rgba(26,168,122,0.06)"
+          fill="var(--violet-soft)"
         />
         <ellipse
           cx={crown.x + 40}
           cy={44}
           rx={52}
           ry={24}
-          fill="rgba(240,106,74,0.05)"
+          fill="var(--brand-soft)"
         />
 
-        {/* Trunk — thick organic stroke */}
+        {/* Trunk — thick flat stroke */}
         <path
           d={trunkD}
           fill="none"
-          stroke="url(#trunkGrad)"
+          stroke="var(--path)"
           strokeWidth={14}
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          d={trunkD}
-          fill="none"
-          stroke="rgba(255,255,255,0.28)"
-          strokeWidth={5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          transform={`translate(-2.5 0)`}
-        />
 
         {/* Curved limbs */}
         {nodes.map((n, i) => (
-          <g key={branches[i].domain}>
-            <path
-              d={branchPath(n)}
-              fill="none"
-              stroke="#8fa3b5"
-              strokeWidth={5.5 - Math.min(i, 4) * 0.25}
-              strokeLinecap="round"
-            />
-            <path
-              d={branchPath(n)}
-              fill="none"
-              stroke="rgba(255,255,255,0.35)"
-              strokeWidth={2}
-              strokeLinecap="round"
-              transform={`translate(${n.side > 0 ? -1.2 : 1.2} -0.8)`}
-            />
-          </g>
+          <path
+            key={branches[i].domain}
+            d={branchPath(n)}
+            fill="none"
+            stroke="var(--path)"
+            strokeWidth={5.5 - Math.min(i, 4) * 0.25}
+            strokeLinecap="round"
+          />
         ))}
 
         {/* Root flare */}
@@ -203,11 +171,11 @@ export function KnowledgeTree({ branches }: Props) {
               M ${root.x} ${height - 36}
               L ${root.x} ${height - 10}`}
           fill="none"
-          stroke="#6a7f92"
+          stroke="var(--faded)"
           strokeWidth={4}
           strokeLinecap="round"
         />
-        <circle cx={root.x} cy={height - 8} r={5} fill="var(--coral)" />
+        <circle cx={root.x} cy={height - 8} r={5} fill="var(--brand)" />
       </svg>
 
       {/* Crown label */}
@@ -227,7 +195,7 @@ export function KnowledgeTree({ branches }: Props) {
           const mastered = branch.status === "mastered";
           const status =
             branch.status === "locked" ? "unlockable" : branch.status;
-          const color = MASTERY_META[status].color;
+          const { color, edge } = MASTERY_META[status];
           const progress =
             branch.total > 0 ? branch.mastered / branch.total : 0;
           const labelOnRight = pos.side > 0;
@@ -258,20 +226,20 @@ export function KnowledgeTree({ branches }: Props) {
                   className="relative flex flex-col items-center"
                 >
                   {isNext && (
-                    <span className="absolute -top-9 left-1/2 z-10 -translate-x-1/2 animate-bob whitespace-nowrap rounded-full bg-coral px-3 py-1 font-display text-sm font-bold text-white shadow-clay">
+                    <span className="absolute -top-9 left-1/2 z-10 -translate-x-1/2 animate-bob whitespace-nowrap rounded-full bg-brand px-3 py-1 font-display text-sm font-bold text-white shadow-edge-brand">
                       {t.exploreBranch}
                     </span>
                   )}
 
                   <span
-                    className={`relative flex items-center justify-center rounded-level border-[4px] shadow-clay transition duration-200 active:translate-y-0.5 active:shadow-clay-press ${
+                    className={`relative flex items-center justify-center rounded-level transition duration-150 active:translate-y-1 active:!shadow-none ${
                       isNext ? "animate-level-pulse" : ""
                     }`}
                     style={{
                       width: NODE,
                       height: NODE,
                       backgroundColor: color,
-                      borderColor: "rgba(255,255,255,0.55)",
+                      boxShadow: `0 5px 0 0 ${edge}`,
                       color: "#fff",
                     }}
                   >

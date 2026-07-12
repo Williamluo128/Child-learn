@@ -123,12 +123,29 @@ export async function listDomains(): Promise<string[]> {
 interface QuestionRow {
   id: number;
   topic_id: string;
-  kind: "mcq" | "shade";
+  kind: "mcq" | "shade" | "cubes";
   prompt: string;
   choices: { label: string; text: string }[];
   correct_choice: string;
   explanation: string;
-  spec: { shape: "hexagon" | "circle" | "bar"; numerator: number; denominator: number } | null;
+  // shade: { shape, numerator, denominator, rows?, cols?, label? }
+  // cubes: { solid, l?, h?, w?, cutL?, cutH?, cutW?, steps? }
+  spec: {
+    shape?: "hexagon" | "circle" | "bar" | "grid" | "triangle";
+    numerator?: number;
+    denominator?: number;
+    rows?: number;
+    cols?: number;
+    label?: string;
+    solid?: "cuboid" | "lshape" | "staircase";
+    l?: number;
+    h?: number;
+    w?: number;
+    cutL?: number;
+    cutH?: number;
+    cutW?: number;
+    steps?: number;
+  } | null;
 }
 
 // The "learn from zero" study page, composed entirely from existing fields:
@@ -216,11 +233,28 @@ export async function pickQuestion(
     kind: q.kind,
     prompt: q.prompt,
     choices: q.choices.map((c) => ({ key: c.label, text: c.text })),
-    ...(q.kind === "shade" && q.spec
+    ...(q.kind === "shade" && q.spec?.shape
       ? {
           shape: q.spec.shape,
           numerator: q.spec.numerator,
           denominator: q.spec.denominator,
+          ...(q.spec.rows ? { rows: q.spec.rows } : {}),
+          ...(q.spec.cols ? { cols: q.spec.cols } : {}),
+          ...(q.spec.label ? { label: q.spec.label } : {}),
+        }
+      : {}),
+    ...(q.kind === "cubes" && q.spec?.solid
+      ? {
+          cubes: {
+            solid: q.spec.solid,
+            ...(q.spec.l ? { l: q.spec.l } : {}),
+            ...(q.spec.h ? { h: q.spec.h } : {}),
+            ...(q.spec.w ? { w: q.spec.w } : {}),
+            ...(q.spec.cutL ? { cutL: q.spec.cutL } : {}),
+            ...(q.spec.cutH ? { cutH: q.spec.cutH } : {}),
+            ...(q.spec.cutW ? { cutW: q.spec.cutW } : {}),
+            ...(q.spec.steps ? { steps: q.spec.steps } : {}),
+          },
         }
       : {}),
   };

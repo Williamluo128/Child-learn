@@ -23,8 +23,21 @@ export interface Dependency {
   reason?: string;
 }
 
-export type QuestionKind = "mcq" | "shade";
-export type ShapeKind = "hexagon" | "circle" | "bar";
+export type QuestionKind = "mcq" | "shade" | "cubes";
+export type ShapeKind = "hexagon" | "circle" | "bar" | "grid" | "triangle";
+export type SolidKind = "cuboid" | "lshape" | "staircase";
+
+// geometry for count-unit-cubes 3D questions (see lib/solids.ts)
+export interface CubesSpecPublic {
+  solid: SolidKind;
+  l?: number;
+  h?: number;
+  w?: number;
+  cutL?: number;
+  cutH?: number;
+  cutW?: number;
+  steps?: number;
+}
 
 // A question as sent to the client — never includes the correct answer.
 // For shade questions, shape/numerator/denominator are the instruction (what
@@ -38,6 +51,15 @@ export interface QuestionPublic {
   shape?: ShapeKind;
   numerator?: number;
   denominator?: number;
+  // grid geometry
+  rows?: number;
+  cols?: number;
+  // what the instruction displays when it differs from numerator/denominator —
+  // e.g. "0.4" (decimal), "30%" (percent), "1/2" (equivalent fraction on an
+  // 8-part shape). The child must translate it into a count of parts.
+  label?: string;
+  // cubes questions: the solid to render (the count is the hidden answer)
+  cubes?: CubesSpecPublic;
 }
 
 // POST /api/answer  request
@@ -94,6 +116,43 @@ export interface GraphResponse {
   domain?: string;
   domains?: string[];
 }
+
+// POST /api/diagnose/next — layered adaptive diagnostic (PLAN §3.4).
+// The client holds the session (answers so far); the server judges, replans
+// deterministically, and returns the next probe or the final summary. Nothing
+// is persisted until the session completes.
+export interface DiagnoseAnswer {
+  questionId: number;
+  choiceKey: string;
+}
+
+export interface DiagnoseRequest {
+  studentId: string;
+  history: DiagnoseAnswer[];
+  lang?: string;
+}
+
+export interface DiagnoseNextResponse {
+  done: false;
+  question: QuestionPublic;
+  topicName: string;
+  // this probe descended from a failed topic (show the "stepping down" note)
+  isBacktrack: boolean;
+  // judgment of the last submitted answer (null on session start)
+  lastCorrect: boolean | null;
+  progress: { asked: number; budget: number };
+}
+
+export interface DiagnoseSummary {
+  done: true;
+  lastCorrect: boolean | null;
+  masteredCount: number; // answered-correct + inferred prerequisites
+  inferredCount: number;
+  gaps: { topicId: string; name: string }[];
+  frontier: { topicId: string; name: string }[]; // where to start
+}
+
+export type DiagnoseResponse = DiagnoseNextResponse | DiagnoseSummary;
 
 // GET /api/lesson  response — the "learn from zero" study page (/learn).
 // Composed from existing DB fields; no separately-authored lesson prose.

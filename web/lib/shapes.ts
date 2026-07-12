@@ -2,7 +2,7 @@
 // questions. Given a denominator, produce N equal-area clickable regions as
 // SVG path strings. No content authoring / LLM needed — pure math.
 
-export type ShapeKind = "hexagon" | "circle" | "bar";
+export type ShapeKind = "hexagon" | "circle" | "bar" | "grid" | "triangle";
 
 export interface ShapeSpec {
   kind: ShapeKind;
@@ -10,6 +10,12 @@ export interface ShapeSpec {
   viewBox: string;
   // one SVG path "d" per equal part, in reading order
   regions: string[];
+}
+
+export interface ShapeOpts {
+  // grid only: rows × cols must equal the denominator
+  rows?: number;
+  cols?: number;
 }
 
 const F = (n: number) => n.toFixed(2);
@@ -70,7 +76,56 @@ function barParts(d: number, w: number, h: number): string[] {
   return regions;
 }
 
-export function makeShape(kind: ShapeKind, denominator: number): ShapeSpec {
+// Rectangle split into rows × cols equal cells, reading order (left→right,
+// top→bottom). The workhorse for hundredths (10×10) and general area models.
+function gridCells(rows: number, cols: number, w: number, h: number): string[] {
+  const regions: string[] = [];
+  const cw = w / cols;
+  const ch = h / rows;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = c * cw;
+      const y = r * ch;
+      regions.push(`M ${F(x)} ${F(y)} H ${F(x + cw)} V ${F(y + ch)} H ${F(x)} Z`);
+    }
+  }
+  return regions;
+}
+
+// Equilateral triangle subdivided into k² congruent small triangles
+// (denominator must be a perfect square: 4, 9, 16…). Row i holds 2i+1 parts,
+// alternating up/down-pointing.
+function triangleParts(d: number, cx: number, topY: number, side: number): string[] {
+  const k = Math.round(Math.sqrt(d));
+  const u = side / k; // small-triangle side
+  const rowH = (u * Math.sqrt(3)) / 2;
+  const regions: string[] = [];
+  for (let i = 0; i < k; i++) {
+    const yT = topY + i * rowH;
+    const yB = topY + (i + 1) * rowH;
+    const xTop = cx - (i * u) / 2; // leftmost vertex on the row's top edge
+    const xBot = cx - ((i + 1) * u) / 2; // leftmost vertex on the bottom edge
+    // upward-pointing triangles (i+1 of them)
+    for (let t = 0; t <= i; t++) {
+      regions.push(
+        `M ${F(xTop + t * u)} ${F(yT)} L ${F(xBot + t * u)} ${F(yB)} L ${F(xBot + (t + 1) * u)} ${F(yB)} Z`
+      );
+    }
+    // downward-pointing triangles (i of them)
+    for (let t = 0; t < i; t++) {
+      regions.push(
+        `M ${F(xTop + t * u)} ${F(yT)} L ${F(xTop + (t + 1) * u)} ${F(yT)} L ${F(xBot + (t + 1) * u)} ${F(yB)} Z`
+      );
+    }
+  }
+  return regions;
+}
+
+export function makeShape(
+  kind: ShapeKind,
+  denominator: number,
+  opts: ShapeOpts = {}
+): ShapeSpec {
   if (kind === "hexagon") {
     // hexagon geometry is fixed at 18 parts
     return {
@@ -86,6 +141,27 @@ export function makeShape(kind: ShapeKind, denominator: number): ShapeSpec {
       denominator,
       viewBox: "0 0 300 300",
       regions: circleSectors(denominator, 150, 150, 135),
+    };
+  }
+  if (kind === "grid") {
+    const rows = opts.rows ?? Math.max(1, Math.round(Math.sqrt(denominator)));
+    const cols = opts.cols ?? Math.ceil(denominator / rows);
+    const w = 360;
+    const h = Math.max(90, (360 * rows) / cols);
+    return {
+      kind,
+      denominator: rows * cols,
+      viewBox: `0 0 ${w} ${Math.round(h)}`,
+      regions: gridCells(rows, cols, w, h),
+    };
+  }
+  if (kind === "triangle") {
+    // side 300, height ≈ 260
+    return {
+      kind,
+      denominator,
+      viewBox: "0 0 320 285",
+      regions: triangleParts(denominator, 160, 10, 300),
     };
   }
   // bar

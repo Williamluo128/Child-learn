@@ -18,7 +18,7 @@ type ViewMode = "trail" | "net";
 function MapLoading() {
   const { t } = useI18n();
   return (
-    <div className="rounded-card bg-surface p-14 text-center shadow-card">
+    <div className="card p-14 text-center">
       <div className="mx-auto mb-3 h-3 w-36 animate-pulse rounded-full bg-line" />
       <div className="mx-auto h-3 w-52 animate-pulse rounded-full bg-line" />
       <p className="mt-5 text-base text-muted">{t.loading}</p>
@@ -71,7 +71,7 @@ function MapContent() {
             <ArrowLeft size={18} weight="bold" />
             {t.back}
           </Link>
-          <h1 className="font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">
+          <h1 className="font-display text-3xl font-extrabold tracking-tight text-brand md:text-4xl">
             {t.mapTitle}
           </h1>
           <p className="mx-auto mt-2 max-w-[28ch] text-base leading-relaxed text-muted">
@@ -96,14 +96,14 @@ function MapContent() {
           <ArrowLeft size={18} weight="bold" />
           {t.backToTree}
         </Link>
-        <h1 className="font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">
+        <h1 className="font-display text-3xl font-extrabold tracking-tight text-ink md:text-4xl">
           {label}
         </h1>
         <p className="mt-2 max-w-[30ch] text-base leading-relaxed text-muted">
           {cleared ? t.branchCleared : t.mapHint}
         </p>
         {branch && (
-          <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-surface px-4 py-1.5 text-sm font-semibold text-ink shadow-clay-soft">
+          <p className="chip mt-3 px-4 py-1.5 text-sm text-ink">
             <span
               className={`h-2.5 w-2.5 rounded-full ${
                 cleared ? "bg-mastered" : "bg-unlockable"
@@ -119,8 +119,8 @@ function MapContent() {
         <button
           type="button"
           onClick={() => setMode("trail")}
-          className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 text-sm font-semibold shadow-clay-soft transition active:translate-y-0.5 active:shadow-clay-press ${
-            mode === "trail" ? "bg-ink text-white" : "bg-surface text-ink"
+          className={`btn min-h-11 px-4 text-sm ${
+            mode === "trail" ? "btn-violet" : "btn-neutral"
           }`}
         >
           <Path size={16} weight="bold" />
@@ -129,8 +129,8 @@ function MapContent() {
         <button
           type="button"
           onClick={() => setMode("net")}
-          className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 text-sm font-semibold shadow-clay-soft transition active:translate-y-0.5 active:shadow-clay-press ${
-            mode === "net" ? "bg-ink text-white" : "bg-surface text-ink"
+          className={`btn min-h-11 px-4 text-sm ${
+            mode === "net" ? "btn-violet" : "btn-neutral"
           }`}
         >
           <Graph size={16} weight="bold" />
@@ -148,7 +148,7 @@ function MapContent() {
         <>
           <GraphLegend />
           {graph ? (
-            <div className="overflow-hidden rounded-card bg-surface shadow-card">
+            <div className="card overflow-hidden">
               <SkillGraph graph={graph} />
             </div>
           ) : (

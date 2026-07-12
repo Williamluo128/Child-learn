@@ -8,8 +8,15 @@ import { fetchNextQuestion, submitAnswer } from "@/lib/api/client";
 import { QuestionCard } from "@/components/quiz/QuestionCard";
 import { FeedbackBanner } from "@/components/quiz/FeedbackBanner";
 import { MasteryMeter } from "@/components/quiz/MasteryMeter";
+import dynamic from "next/dynamic";
 import { ShadeFraction } from "@/components/interactive/ShadeFraction";
 import { useI18n } from "@/lib/i18n/I18nProvider";
+
+// three.js is heavy — load it only when a cubes question actually shows up
+const CubeCount = dynamic(
+  () => import("@/components/interactive/CubeCount").then((m) => m.CubeCount),
+  { ssr: false }
+);
 
 export default function PracticePage({
   params,
@@ -74,20 +81,32 @@ export default function PracticePage({
       </header>
 
       {loading || !question ? (
-        <div className="rounded-card bg-surface p-14 text-center shadow-card">
+        <div className="card p-14 text-center">
           <div className="mx-auto mb-3 h-3 w-36 animate-pulse rounded-full bg-line" />
           <div className="mx-auto h-3 w-52 animate-pulse rounded-full bg-line" />
           <p className="mt-5 text-base text-muted">{t.loading}</p>
         </div>
       ) : (
         <>
-          {question.kind === "shade" && question.shape ? (
-            <div className="rounded-card border border-line bg-surface p-6 shadow-card md:p-8">
+          {question.kind === "cubes" && question.cubes ? (
+            <div className="card p-6 md:p-8">
+              <CubeCount
+                key={question.id}
+                spec={question.cubes}
+                onCheck={(count) => submit(String(count))}
+                verdict={result ? result.correct : null}
+              />
+            </div>
+          ) : question.kind === "shade" && question.shape ? (
+            <div className="card p-6 md:p-8">
               <ShadeFraction
                 key={question.id}
                 shape={question.shape}
                 numerator={question.numerator ?? 1}
                 denominator={question.denominator}
+                rows={question.rows}
+                cols={question.cols}
+                label={question.label}
                 onCheck={(count) => submit(String(count))}
                 verdict={result ? result.correct : null}
               />
@@ -104,7 +123,7 @@ export default function PracticePage({
           {result && (
             <button
               onClick={handleNext}
-              className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-coral px-8 py-4 text-lg font-semibold text-ink shadow-card transition hover:bg-coral-deep hover:text-white active:scale-[0.98] md:w-auto md:self-end"
+              className="btn btn-primary min-h-14 w-full px-8 py-4 text-lg md:w-auto md:self-end"
             >
               {result.correct ? t.next : t.keepGoing}
               <ArrowRight size={20} weight="bold" />

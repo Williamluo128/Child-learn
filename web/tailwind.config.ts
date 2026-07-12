@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
-// Kid game-path tokens: clay surfaces, coral CTA, no purple defaults.
+// Sticker-book tokens: paper canvas, flat fills, 2px borders, hard bottom edges.
+// Coral = brand/CTA, violet = secondary interactive, teal = mastered, amber = gap.
 const config: Config = {
   content: [
     "./app/**/*.{ts,tsx}",
@@ -10,48 +11,66 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#1a2332",
-        muted: "#6b7589",
-        canvas: "#e8f0f4",
+        ink: "#443d4d",
+        muted: "#7d7787",
+        faded: "#b9b3c0",
+        canvas: "#f7f5f9",
         surface: "#ffffff",
-        line: "#d5e0e8",
-        path: "#c5d4de",
+        line: "#e7e3ea",
+        path: "#ddd7e5",
         coral: {
-          DEFAULT: "#f06a4a",
-          soft: "#fff0eb",
-          deep: "#d95538",
+          DEFAULT: "#f45b39",
+          soft: "#ffe9e2",
+          deep: "#d64322",
         },
         brand: {
-          DEFAULT: "#f06a4a",
-          soft: "#fff0eb",
+          DEFAULT: "#f45b39",
+          soft: "#ffe9e2",
+          deep: "#d64322",
         },
-        mastered: "#1aa87a",
-        gap: "#e89a2e",
-        locked: "#9aa3b2",
-        unlockable: "#3b82f0",
+        violet: {
+          DEFAULT: "#7c5cf4",
+          soft: "#f0ebff",
+          deep: "#5f41d6",
+        },
+        mastered: {
+          DEFAULT: "#12b284",
+          soft: "#dcf7ee",
+          deep: "#0a9169",
+        },
+        gap: {
+          DEFAULT: "#efa11c",
+          soft: "#fcf0d8",
+          deep: "#c9820b",
+        },
+        locked: "#b9b3c0",
+        unlockable: {
+          DEFAULT: "#7c5cf4",
+          soft: "#f0ebff",
+          deep: "#5f41d6",
+        },
       },
       fontFamily: {
         sans: ["var(--font-outfit)", "system-ui", "sans-serif"],
         display: ["var(--font-baloo)", "var(--font-outfit)", "system-ui", "sans-serif"],
       },
       borderRadius: {
-        card: "1.5rem",
-        control: "1.25rem",
+        card: "1rem",
+        control: "0.75rem",
         level: "9999px",
       },
       fontSize: {
-        base: ["1.125rem", { lineHeight: "1.7rem" }],
-        lg: ["1.3125rem", { lineHeight: "1.9rem" }],
+        base: ["1.0625rem", { lineHeight: "1.6rem" }],
+        lg: ["1.25rem", { lineHeight: "1.8rem" }],
       },
       boxShadow: {
-        card: "0 8px 28px rgba(26, 35, 50, 0.06)",
-        lift: "0 14px 36px rgba(26, 35, 50, 0.1)",
-        clay:
-          "4px 6px 0 rgba(26, 35, 50, 0.12), inset 0 -3px 0 rgba(26, 35, 50, 0.08), inset 0 2px 0 rgba(255, 255, 255, 0.45)",
-        "clay-press":
-          "2px 3px 0 rgba(26, 35, 50, 0.12), inset 0 -1px 0 rgba(26, 35, 50, 0.08)",
-        "clay-soft":
-          "0 10px 24px rgba(26, 35, 50, 0.08), inset 0 -2px 0 rgba(26, 35, 50, 0.06)",
+        // Hard bottom edges — the only "shadows" in this language.
+        edge: "0 4px 0 0 #e7e3ea",
+        "edge-sm": "0 3px 0 0 #e7e3ea",
+        "edge-brand": "0 4px 0 0 #d64322",
+        "edge-violet": "0 4px 0 0 #5f41d6",
+        "edge-teal": "0 4px 0 0 #0a9169",
+        "edge-amber": "0 4px 0 0 #c9820b",
       },
       maxWidth: {
         shell: "480px",

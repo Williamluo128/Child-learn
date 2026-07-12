@@ -9,13 +9,17 @@ export function FeedbackBanner({ result }: { result: AnswerResponse }) {
   const ok = result.correct;
   return (
     <div
-      className={`rounded-card p-5 md:p-6 ${
+      className={`rounded-card border-2 p-5 md:p-6 ${
         ok
-          ? "bg-[rgba(26,168,122,0.1)]"
-          : "bg-[rgba(232,154,46,0.12)]"
+          ? "border-mastered bg-mastered-soft"
+          : "border-gap bg-gap-soft"
       }`}
     >
-      <p className="flex items-center gap-2.5 text-xl font-semibold text-ink">
+      <p
+        className={`flex items-center gap-2.5 font-display text-xl font-bold ${
+          ok ? "text-mastered-deep" : "text-gap-deep"
+        }`}
+      >
         {ok ? (
           <CheckCircle size={26} weight="fill" className="text-mastered" />
         ) : (
@@ -24,13 +28,13 @@ export function FeedbackBanner({ result }: { result: AnswerResponse }) {
         {ok ? t.correct : t.tryAgain}
       </p>
       {result.explanation && (
-        <p className="mt-3 max-w-[40ch] text-base leading-relaxed text-muted">
+        <p className="mt-3 max-w-[40ch] text-base leading-relaxed text-ink">
           {result.explanation}
         </p>
       )}
       {result.insertedPrerequisite && (
         <p className="mt-4 text-base font-medium text-ink">
-          <span className="text-gap">{t.shoreUpBasics}</span>
+          <span className="text-gap-deep">{t.shoreUpBasics}</span>
           {t.backToPrefix}
           {result.insertedPrerequisite.name}
           {t.backToSuffix}

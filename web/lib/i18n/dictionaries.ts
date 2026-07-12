@@ -47,9 +47,37 @@ type Dict = {
   startQuestions: string;
   learnFirst: string;
   shadeInstruction: (n: number, d: number) => string;
+  shadeInstructionLabel: (label: string) => string;
   shadeProgress: (k: number, d: number) => string;
   shadeCheck: string;
   shadeReset: string;
+  cubesInstruction: string;
+  cubesHint: string;
+  cubesCount: string;
+  cubesShowSteps: string;
+  cubesHideSteps: string;
+  shadeShowSteps: string;
+  shadeStepIntro: (label: string, n: number, d: number) => string;
+  shadeStepCount: (k: number, d: number) => string;
+  shadeStepDone: (n: number, d: number) => string;
+  diagCta: string;
+  diagTitle: string;
+  diagIntro: string;
+  diagStart: string;
+  diagQuestionOf: (k: number, n: number) => string;
+  diagBacktrackNote: string;
+  diagPrevCorrect: string;
+  diagPrevWrong: string;
+  diagDoneTitle: string;
+  diagMasteredLine: (n: number, inferred: number) => string;
+  diagGapsTitle: string;
+  diagNoGaps: string;
+  diagStartHere: string;
+  diagGoFix: string;
+  diagBackHome: string;
+  cubesStepLayer: (n: number, count: number, total: number) => string;
+  cubesStepColumn: (n: number, count: number, total: number) => string;
+  cubesStepDone: (total: number) => string;
   mastery: Record<MasteryStatus, string>;
 };
 
@@ -99,9 +127,37 @@ export const DICT: Record<Locale, Dict> = {
     startQuestions: "开始做题",
     learnFirst: "先学一下",
     shadeInstruction: (n, d) => `涂出 ${n}/${d}`,
+    shadeInstructionLabel: (label) => `涂出 ${label}`,
     shadeProgress: (k, d) => `已涂 ${k}/${d}`,
     shadeCheck: "检查",
     shadeReset: "重来",
+    cubesInstruction: "这个立体图形由多少个小方块搭成？",
+    cubesHint: "拖动可以转一转，数数每一层",
+    cubesCount: "小方块数",
+    cubesShowSteps: "看数法",
+    cubesHideSteps: "收起",
+    shadeShowSteps: "看涂法",
+    shadeStepIntro: (label, n, d) => `${label} = ${n}/${d}，要涂 ${n} 块`,
+    shadeStepCount: (k, d) => `已涂 ${k}/${d}`,
+    shadeStepDone: (n, d) => `涂好啦：${n}/${d}！`,
+    diagCta: "测一测我在哪",
+    diagTitle: "摸底小测验",
+    diagIntro: "大约 10 道题。答错也没关系——我们就是想找到最适合你开始的地方。",
+    diagStart: "开始测验",
+    diagQuestionOf: (k, n) => `第 ${k} 题，共约 ${n} 题`,
+    diagBacktrackNote: "往基础方向走一步，看看这里",
+    diagPrevCorrect: "上一题答对了",
+    diagPrevWrong: "上一题没答对，没关系",
+    diagDoneTitle: "测完啦！",
+    diagMasteredLine: (n, inferred) => `你已经掌握了约 ${n} 个知识点${inferred > 0 ? `（其中 ${inferred} 个是根据答对推断的）` : ""}`,
+    diagGapsTitle: "需要补一补的地方",
+    diagNoGaps: "没有发现明显缺口，太棒了！",
+    diagStartHere: "建议从这里开始",
+    diagGoFix: "去学第一个",
+    diagBackHome: "回知识树",
+    cubesStepLayer: (n, c, total) => `第 ${n} 层：${c} 块，累计 ${total} 块`,
+    cubesStepColumn: (n, c, total) => `第 ${n} 列：${c} 块，累计 ${total} 块`,
+    cubesStepDone: (total) => `一共 ${total} 块！`,
     mastery: {
       mastered: "会了",
       gap: "再练",
@@ -154,9 +210,37 @@ export const DICT: Record<Locale, Dict> = {
     startQuestions: "Start questions",
     learnFirst: "Learn it first",
     shadeInstruction: (n, d) => `Color ${n}/${d}`,
+    shadeInstructionLabel: (label) => `Color ${label}`,
     shadeProgress: (k, d) => `Shaded ${k}/${d}`,
     shadeCheck: "Check",
     shadeReset: "Reset",
+    cubesInstruction: "How many unit cubes build this solid?",
+    cubesHint: "Drag to spin it — count layer by layer",
+    cubesCount: "Unit cubes",
+    cubesShowSteps: "Show me how",
+    cubesHideSteps: "Hide",
+    shadeShowSteps: "Show me how",
+    shadeStepIntro: (label, n, d) => `${label} = ${n}/${d} — shade ${n} parts`,
+    shadeStepCount: (k, d) => `${k}/${d} shaded`,
+    shadeStepDone: (n, d) => `Done: ${n}/${d}!`,
+    diagCta: "Find my level",
+    diagTitle: "Placement check",
+    diagIntro: "About 10 questions. Wrong answers are fine — we're just finding the best place for you to start.",
+    diagStart: "Start the check",
+    diagQuestionOf: (k, n) => `Question ${k} of ~${n}`,
+    diagBacktrackNote: "Stepping toward the basics — try this one",
+    diagPrevCorrect: "Last one: correct",
+    diagPrevWrong: "Last one: not quite — that's okay",
+    diagDoneTitle: "All done!",
+    diagMasteredLine: (n, inferred) => `You already know about ${n} skills${inferred > 0 ? ` (${inferred} inferred from what you got right)` : ""}`,
+    diagGapsTitle: "Places to shore up",
+    diagNoGaps: "No clear gaps found — amazing!",
+    diagStartHere: "Suggested starting points",
+    diagGoFix: "Learn the first one",
+    diagBackHome: "Back to the tree",
+    cubesStepLayer: (n, c, total) => `Layer ${n}: ${c} cubes — ${total} so far`,
+    cubesStepColumn: (n, c, total) => `Column ${n}: ${c} cubes — ${total} so far`,
+    cubesStepDone: (total) => `${total} cubes in all!`,
     mastery: {
       mastered: "Got it",
       gap: "Practice",

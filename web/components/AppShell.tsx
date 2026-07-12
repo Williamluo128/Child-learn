@@ -23,12 +23,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           href="/"
           className="group flex min-h-11 items-center gap-2.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
         >
-          <span className="relative flex h-9 w-9 items-center justify-center rounded-control bg-ink text-white shadow-clay">
-            <span className="absolute inset-[8px] rounded-sm border-2 border-coral" />
-            <span className="h-1.5 w-1.5 rounded-full bg-coral" />
+          <span className="relative flex h-9 w-9 items-center justify-center rounded-control bg-brand text-white shadow-edge-brand transition group-active:translate-y-1 group-active:shadow-none">
+            <span className="absolute inset-[8px] rounded-sm border-2 border-white/80" />
+            <span className="h-1.5 w-1.5 rounded-full bg-white" />
           </span>
           {!onHome && (
-            <span className="font-display text-lg font-bold tracking-tight text-ink">
+            <span className="font-display text-lg font-extrabold tracking-tight text-brand">
               Child Learn
             </span>
           )}
@@ -37,7 +37,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="flex items-center gap-2">
           <Link
             href={onMap ? "/" : "/map"}
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-surface px-3.5 py-2 text-sm font-semibold text-ink shadow-clay-soft transition active:translate-y-0.5 active:shadow-clay-press focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+            className="btn btn-secondary min-h-11 px-3.5 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             {onMap ? (
               <>

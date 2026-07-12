@@ -41,7 +41,7 @@ export function SkillGraph({ graph }: { graph: GraphResponse }) {
         target: e.to,
         animated: false,
         style: {
-          stroke: e.strength === "hard" ? "#8b95a8" : "#c0c8d6",
+          stroke: e.strength === "hard" ? "#b9b3c0" : "#ddd7e5",
           strokeWidth: e.strength === "hard" ? 2.5 : 2,
           strokeDasharray: e.strength === "soft" ? "5 4" : undefined,
         },
@@ -54,7 +54,7 @@ export function SkillGraph({ graph }: { graph: GraphResponse }) {
   };
 
   return (
-    <div className="h-[65vh] w-full overflow-hidden bg-canvas/50">
+    <div className="h-[65vh] w-full overflow-hidden bg-canvas">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -68,7 +68,7 @@ export function SkillGraph({ graph }: { graph: GraphResponse }) {
         panOnScroll
         zoomOnScroll
       >
-        <Background color="#dce3ee" gap={24} size={1} />
+        <Background color="#ddd7e5" gap={24} size={1.5} />
         <Controls showInteractive={false} />
       </ReactFlow>
     </div>

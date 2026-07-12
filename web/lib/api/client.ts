@@ -1,6 +1,8 @@
 import type {
   AnswerRequest,
   AnswerResponse,
+  DiagnoseAnswer,
+  DiagnoseResponse,
   GraphResponse,
   LessonResponse,
   PathItem,
@@ -60,5 +62,17 @@ export async function fetchGraph(
 export async function fetchLesson(topicId: string): Promise<LessonResponse> {
   const r = await fetch(`/api/lesson?topicId=${topicId}`);
   if (!r.ok) throw new Error("failed to fetch lesson");
+  return r.json();
+}
+
+export async function fetchDiagnoseNext(
+  history: DiagnoseAnswer[]
+): Promise<DiagnoseResponse> {
+  const r = await fetch("/api/diagnose/next", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ studentId: STUDENT_ID, history }),
+  });
+  if (!r.ok) throw new Error("failed to fetch diagnose step");
   return r.json();
 }

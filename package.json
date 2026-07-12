@@ -15,6 +15,7 @@
     "questions:grade5-math": "node scripts/generate-questions.mjs --action submit --subgraph data/subgraphs/grade5-math.json --model claude-sonnet-4-5 --questions-per-topic 3",
     "questions:openai": "node scripts/generate-questions.mjs --provider openai --action submit --subgraph data/subgraphs/grade5-math.json --model gpt-4.1-mini --questions-per-topic 3",
     "questions:shade": "node scripts/generate-shade-questions.mjs",
+    "questions:cubes": "node scripts/generate-cube-questions.mjs",
     "practice": "node scripts/practice-cli.mjs --subgraph data/subgraphs/fractions-slice.json",
     "practice:grade5-math": "node scripts/practice-cli.mjs --subgraph data/subgraphs/grade5-math.json",
     "practice:demo": "node scripts/practice-cli.mjs --subgraph data/subgraphs/fractions-slice.json --student demo --demo true --demo-limit 6"
